@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo" rel="stylesheet">
+
+        <!-- TODO: Run CSS + JS through minifiers -->
+        <link rel="stylesheet" href="../../_static/css/main.css" type="text/css" >
+        <link rel="stylesheet" href="../../_static/css/highlight.css " type="text/css" >
+
+        <script type="text/javascript" id="documentation_options"
+                data-url_root="../../"
+                src="../../_static/documentation_options.js"></script>
+        <script async
+                src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+                type="application/javascript"></script>
+
+        <title>Adding an Example to the Documentation</title>
+
+        
+    </head>
+    <body>
+        <!-- Slightly modified from the basic theme in the Sphinx repository
+        https://github.com/sphinx-doc/sphinx/blob/master/sphinx/themes/basic/layout.html -->
+
+        <div class="header">
+            <a href="/" id="site-name"><h2>Stylo<sub>v0.4.2</sub></h2></a>
+            <div class="nav-sections">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../using/index.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extending/index.html">Extending</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maths/index.html">Mathematics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About the Docs</a></li>
+</ul>
+
+            </div>
+        </div>
+        <div class="nav">
+            <div>
+                <h3 class="nav-header">Page Contents</h3>
+                <ul>
+<li><a class="reference internal" href="#">Adding an Example to the Documentation</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a><ul>
+<li><a class="reference internal" href="#the-code">The Code</a></li>
+<li><a class="reference internal" href="#the-example-function">The Example Function</a></li>
+<li><a class="reference internal" href="#declaring-your-example">Declaring Your Example</a></li>
+<li><a class="reference internal" href="#integrating-with-the-documentation">Integrating with the Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            <form class="search" action="../../search.html" method="get">
+                  <input type="text" name="q" placeholder="Search"/>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+        <div class="content">
+<div class="main">
+    <div class="section" id="adding-an-example-to-the-documentation">
+<span id="contribute-tutorial-add-example"></span><h1>Adding an Example to the Documentation<a class="headerlink" href="#adding-an-example-to-the-documentation" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial we’ll go through the process of adding a new example like
+<a class="reference internal" href="../../extending/examples/pacman.html#extending-example-pacman"><span class="std std-ref">Pacman</span></a> to the documentation. Examples are added as test cases
+to the test suite in the <code class="code docutils literal notranslate"><span class="pre">tests/examples</span></code> folder, among other reasons this ensures
+that the example always works with the current version of <code class="code docutils literal notranslate"><span class="pre">stylo</span></code></p>
+<p>The test case is written in an unusual way but this allows it to work with our automated
+build system for the documentation which will</p>
+<ul class="simple">
+<li>Test and benchmark your example</li>
+<li>Save the example image to the <code class="code docutils literal notranslate"><span class="pre">docs/_static</span></code> folder</li>
+<li>Add a page for your example to the documentation including the image and the example
+code</li>
+</ul>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Your example will need to be written with the following structure.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module Docstring.</span>
+
+<span class="sd">Here you can include any explanations and notes about your example. It will be pasted</span>
+<span class="sd">straight into the generated example page in the documentation and will appear before</span>
+<span class="sd">your code but after the example image</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">stylo.testing.examples</span> <span class="kn">import</span> <span class="n">define_benchmarked_example</span>
+
+<span class="n">example_info</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;my_example&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;using&quot;</span>  <span class="c1"># This determines where on the documentation your example is included</span>
+<span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">my_example</span><span class="p">():</span>
+
+    <span class="c1"># &lt;example&gt;</span>
+
+    <span class="c1"># Your example goes here, this is what the user will see in the documentation.</span>
+
+    <span class="c1"># &lt;/example&gt;</span>
+
+    <span class="k">return</span> <span class="n">image</span>
+
+<span class="n">test_my_example</span> <span class="o">=</span> <span class="n">define_benchmarked_example</span><span class="p">(</span><span class="s2">&quot;my_example&quot;</span><span class="p">,</span> <span class="n">my_example</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally make sure that your example is saved to the <code class="code docutils literal notranslate"><span class="pre">tests/examples</span></code> folder with
+a filename like <code class="code docutils literal notranslate"><span class="pre">test_my_example.py</span></code>.</p>
+<p>For the remainder of the tutorial we’ll go through the process of creating an example
+that will draw a red circle in the center of an image.</p>
+<div class="section" id="the-code">
+<h3>The Code<a class="headerlink" href="#the-code" title="Permalink to this headline">¶</a></h3>
+<p>We’ll start with the most important part writing the code that is the example. In our
+case that’s constructing an <code class="code docutils literal notranslate"><span class="pre">Image</span></code> instance that can be used to draw a red circle.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">stylo.color</span> <span class="kn">import</span> <span class="n">FillColor</span><span class="p">,</span> <span class="n">RGB8</span>
+<span class="kn">from</span> <span class="nn">stylo.domain</span> <span class="kn">import</span> <span class="n">SquareDomain</span>
+<span class="kn">from</span> <span class="nn">stylo.image</span> <span class="kn">import</span> <span class="n">SimpleImage</span>
+<span class="kn">from</span> <span class="nn">stylo.shape</span> <span class="kn">import</span> <span class="n">Circle</span>
+
+
+<span class="n">domain</span> <span class="o">=</span> <span class="n">SquareDomain</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+<span class="n">red</span> <span class="o">=</span> <span class="n">FillColor</span><span class="p">(</span><span class="n">RGB8</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ff0000&quot;</span><span class="p">))</span>
+
+<span class="n">image</span> <span class="o">=</span> <span class="n">SimpleImage</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">circle</span><span class="p">,</span> <span class="n">red</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Save your code in a file such as <code class="code docutils literal notranslate"><span class="pre">tests/examples/test_red_circle.py</span></code>.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Your filename <em>must</em> start with <code class="code docutils literal notranslate"><span class="pre">test_</span></code> for it to be recognised as a test by
+<code class="code docutils literal notranslate"><span class="pre">pytest</span></code>.</p>
+</div>
+</div>
+<div class="section" id="the-example-function">
+<h3>The Example Function<a class="headerlink" href="#the-example-function" title="Permalink to this headline">¶</a></h3>
+<p>With the example written we now need to rewrite it in such a way that it works with the
+automated test and documentation pipelines. The first step is to wrap it in a function
+that takes no arguments and returns the <code class="code docutils literal notranslate"><span class="pre">image</span></code> variable we have created.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">This function must include <em>everything</em> including your <code class="code docutils literal notranslate"><span class="pre">import</span></code> statements</p>
+</div>
+<p>You also need to add the comment <code class="code docutils literal notranslate"><span class="pre">#</span> <span class="pre">&lt;example&gt;</span></code> before your first import
+statement and the comment <code class="code docutils literal notranslate"><span class="pre">#</span> <span class="pre">&lt;/example&gt;</span></code> after the line where you create the
+<code class="code docutils literal notranslate"><span class="pre">image</span></code> variable.</p>
+<p>These tags are used by <code class="code docutils literal notranslate"><span class="pre">sphinx</span></code> to determine where your example code starts and
+ends so that only the code relating to the example itself is shown on the generated
+example page.</p>
+<p>After this step your example should look something like this</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_red_circle</span><span class="p">():</span>
+
+    <span class="c1"># &lt;example&gt;</span>
+
+    <span class="kn">from</span> <span class="nn">stylo.color</span> <span class="kn">import</span> <span class="n">FillColor</span><span class="p">,</span> <span class="n">RGB8</span>
+    <span class="kn">from</span> <span class="nn">stylo.domain</span> <span class="kn">import</span> <span class="n">SquareDomain</span>
+    <span class="kn">from</span> <span class="nn">stylo.image</span> <span class="kn">import</span> <span class="n">SimpleImage</span>
+    <span class="kn">from</span> <span class="nn">stylo.shape</span> <span class="kn">import</span> <span class="n">Circle</span>
+
+
+    <span class="n">domain</span> <span class="o">=</span> <span class="n">SquareDomain</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">red</span> <span class="o">=</span> <span class="n">FillColor</span><span class="p">(</span><span class="n">RGB8</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ff0000&quot;</span><span class="p">))</span>
+
+    <span class="n">image</span> <span class="o">=</span> <span class="n">SimpleImage</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">circle</span><span class="p">,</span> <span class="n">red</span><span class="p">)</span>
+
+    <span class="c1"># &lt;/example&gt;</span>
+
+    <span class="k">return</span> <span class="n">image</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="declaring-your-example">
+<h3>Declaring Your Example<a class="headerlink" href="#declaring-your-example" title="Permalink to this headline">¶</a></h3>
+<p>With your example function defined, next you need to convert it into a test case that
+can be run by <code class="code docutils literal notranslate"><span class="pre">pytest</span></code>. Thankfully, we have a function
+<code class="xref py py-func docutils literal notranslate"><span class="pre">define_benchmarked_example()</span></code> from the <code class="code docutils literal notranslate"><span class="pre">stylo.testing.examples</span></code> module that
+does this for you. All you have to do is import it and call it.</p>
+<p>This function a few things:</p>
+<ul class="simple">
+<li>It converts your example function into a test case that can be run by <code class="code docutils literal notranslate"><span class="pre">pytest</span></code></li>
+<li>The test case takes the image you define and generates a number of images of different
+sizes and records the execution time using <code class="code docutils literal notranslate"><span class="pre">pytest-benchmark</span></code></li>
+<li>It saves the smallest of these images to the <code class="code docutils literal notranslate"><span class="pre">docs/_static</span></code> folder to be included
+in the documentation.</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">stylo.testing.examples</span> <span class="kn">import</span> <span class="n">define_benchmarked_example</span>
+
+
+<span class="k">def</span> <span class="nf">make_red_circle</span><span class="p">():</span>
+
+    <span class="c1"># &lt;example&gt;</span>
+
+    <span class="kn">from</span> <span class="nn">stylo.color</span> <span class="kn">import</span> <span class="n">FillColor</span><span class="p">,</span> <span class="n">RGB8</span>
+    <span class="kn">from</span> <span class="nn">stylo.domain</span> <span class="kn">import</span> <span class="n">SquareDomain</span>
+    <span class="kn">from</span> <span class="nn">stylo.image</span> <span class="kn">import</span> <span class="n">SimpleImage</span>
+    <span class="kn">from</span> <span class="nn">stylo.shape</span> <span class="kn">import</span> <span class="n">Circle</span>
+
+
+    <span class="n">domain</span> <span class="o">=</span> <span class="n">SquareDomain</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">red</span> <span class="o">=</span> <span class="n">FillColor</span><span class="p">(</span><span class="n">RGB8</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ff0000&quot;</span><span class="p">))</span>
+
+    <span class="n">image</span> <span class="o">=</span> <span class="n">SimpleImage</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">circle</span><span class="p">,</span> <span class="n">red</span><span class="p">)</span>
+
+    <span class="c1"># &lt;/example&gt;</span>
+
+    <span class="k">return</span> <span class="n">image</span>
+
+
+<span class="n">test_red_circle</span> <span class="o">=</span> <span class="n">define_benchmarked_example</span><span class="p">(</span><span class="s2">&quot;red_circle&quot;</span><span class="p">,</span> <span class="n">make_red_circle</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">The variable the result is assigned to must also start with <code class="code docutils literal notranslate"><span class="pre">test_</span></code> for it to
+be recognised as one.</p>
+</div>
+<p>In addition to passing your function you also need to pass in a name for your example,
+this will become the filename of the image that is saved to the <code class="code docutils literal notranslate"><span class="pre">docs/_static</span></code>.</p>
+<p>At this point your example should be fully integrated into the testing part of the
+automated pipelines. You can check this by running the benchmarking suite using the
+following command.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ tox -e benchmark
+</pre></div>
+</div>
+<p>You should see output similar to the following</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../../_images/tox_e_benchmark.png"><img alt="../../_images/tox_e_benchmark.png" src="../../_images/tox_e_benchmark.png" style="width: 75%;" /></a>
+<p class="caption"><span class="caption-text"><code class="code docutils literal notranslate"><span class="pre">$</span> <span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">benchmark</span></code></span></p>
+</div>
+<p>You should also see your example saved to <code class="code docutils literal notranslate"><span class="pre">docs/_static/red_circle.png</span></code></p>
+</div>
+<div class="section" id="integrating-with-the-documentation">
+<h3>Integrating with the Documentation<a class="headerlink" href="#integrating-with-the-documentation" title="Permalink to this headline">¶</a></h3>
+<p>The final step is to provide some additional info about your example so that the
+<a class="reference internal" href="../reference/exampledoc.html#contribute-reference-exampledoc"><span class="std std-ref">Exampledoc.py</span></a> script can add your example to the correct place
+in the documentation.</p>
+<p>This is just adding a dictionary called <code class="code docutils literal notranslate"><span class="pre">example_info</span></code> somewhere in your
+<code class="code docutils literal notranslate"><span class="pre">test_red_circle.py</span></code> file. It currently contains two fields:</p>
+<ul class="simple">
+<li><code class="code docutils literal notranslate"><span class="pre">name</span></code>: The name of your example, this <em>must</em> match the name that you passed to
+<code class="code docutils literal notranslate"><span class="pre">define_benchmarked_example</span></code></li>
+<li><code class="code docutils literal notranslate"><span class="pre">type</span></code>: A string that indicates which section of the documentation your example
+belongs to. This <em>must</em> be one of the following: <code class="code docutils literal notranslate"><span class="pre">using</span></code>, <code class="code docutils literal notranslate"><span class="pre">extending</span></code> or
+<code class="code docutils literal notranslate"><span class="pre">contributing</span></code>.</li>
+</ul>
+<p>If you want to include an explanation to go along with your example you can include a
+module level docstring. This will be pasted into the generated <code class="code docutils literal notranslate"><span class="pre">.rst</span></code> file so
+any valid reStructuredText will be rendered.</p>
+<p>Below is the complete example including the <code class="code docutils literal notranslate"><span class="pre">example_info</span></code> dictionary:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;In this example we demonstrate how a red circle can be drawn by making use</span>
+<span class="sd">of the builtin :code:`Circle` shape.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">stylo.testing.examples</span> <span class="kn">import</span> <span class="n">define_benchmarked_example</span>
+
+<span class="n">example_info</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;red_circle&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;using&#39;</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">make_red_circle</span><span class="p">():</span>
+
+    <span class="c1"># &lt;example&gt;</span>
+
+    <span class="kn">from</span> <span class="nn">stylo.color</span> <span class="kn">import</span> <span class="n">FillColor</span><span class="p">,</span> <span class="n">RGB8</span>
+    <span class="kn">from</span> <span class="nn">stylo.domain</span> <span class="kn">import</span> <span class="n">SquareDomain</span>
+    <span class="kn">from</span> <span class="nn">stylo.image</span> <span class="kn">import</span> <span class="n">SimpleImage</span>
+    <span class="kn">from</span> <span class="nn">stylo.shape</span> <span class="kn">import</span> <span class="n">Circle</span>
+
+
+    <span class="n">domain</span> <span class="o">=</span> <span class="n">SquareDomain</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">red</span> <span class="o">=</span> <span class="n">FillColor</span><span class="p">(</span><span class="n">RGB8</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ff0000&quot;</span><span class="p">))</span>
+
+    <span class="n">image</span> <span class="o">=</span> <span class="n">SimpleImage</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">circle</span><span class="p">,</span> <span class="n">red</span><span class="p">)</span>
+
+    <span class="c1"># &lt;/example&gt;</span>
+
+    <span class="k">return</span> <span class="n">image</span>
+
+
+<span class="n">test_red_circle</span> <span class="o">=</span> <span class="n">define_benchmarked_example</span><span class="p">(</span><span class="s2">&quot;red_circle&quot;</span><span class="p">,</span> <span class="n">make_red_circle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Running the command</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ tox -e docs-build
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Because examples are generated using the <a class="reference internal" href="../reference/exampledoc.html#contribute-reference-exampledoc"><span class="std std-ref">Exampledoc.py</span></a>
+script, you need to run a full build of the documentation.</p>
+</div>
+<p>You should be able to see your example page similar to the image below included in the
+documentation.</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="../../_images/red_circle_page.png"><img alt="../../_images/red_circle_page.png" src="../../_images/red_circle_page.png" style="width: 75%;" /></a>
+<p class="caption"><span class="caption-text">The generated example page</span></p>
+</div>
+</div>
+</div>
+</div>
+
+    
+</div>
+        </div>
+        <div class="footer">
+
+            
+                <p>
+                  Powered by <a href="http://www.sphinx-doc.org/">Sphinx</a> 1.8.0 &amp;
+                  <a href="https://github.com/alcarney/topos-theme">Topos Theme</a> 0.0.6
+                </p>
+        </div>
+    </body>
+</html>

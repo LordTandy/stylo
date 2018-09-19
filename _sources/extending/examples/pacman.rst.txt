@@ -1,0 +1,23 @@
+
+.. _extending_example_pacman:
+
+Pacman
+======
+
+.. image:: /_static/examples/pacman.png
+   :width: 75%
+   :align: center
+
+
+In this example we show how pacman can be drawn by defining your own custom
+:code:`Shape` class. Building on the built in :code:`Circle` shape the definition is
+quite simple as long as we remember that the :code:`in_circle`, and :code:`not_in_mouth`
+variables are numpy arrays so they need to be combined using the :code:`np.logical_xxx`
+functions from numpy.
+
+
+.. literalinclude:: ../../../tests/examples/test_pacman.py
+   :language: python
+   :start-after: # <example>
+   :end-before: # </example>
+   :dedent: 4

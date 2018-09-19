@@ -1,0 +1,35 @@
+
+
+.. _api_reference: 
+
+API Reference
+=============
+
+.. toctree::
+
+   stylo
+   stylo_color
+   stylo_color_colormap
+   stylo_color_colorspaces
+   stylo_domain
+   stylo_domain_factory
+   stylo_domain_helpers
+   stylo_domain_rectangular
+   stylo_domain_square
+   stylo_domain_transform
+   stylo_domain_transform_rotation
+   stylo_domain_transform_shear
+   stylo_domain_transform_translation
+   stylo_image
+   stylo_image_simple
+   stylo_shape
+   stylo_shape_basic
+   stylo_shape_shape
+   stylo_testing
+   stylo_testing_domain
+   stylo_testing_examples
+   stylo_testing_factory
+   stylo_testing_shape
+   stylo_testing_strategies
+   stylo_utils
+   stylo_version

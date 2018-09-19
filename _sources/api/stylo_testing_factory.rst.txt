@@ -1,0 +1,13 @@
+
+
+.. _stylo_testing__factory:
+
+Stylo.Testing._factory
+======================
+
+.. automodule:: stylo.testing._factory
+   :members:
+   :undoc-members:
+   :private-members:
+   :show-inheritance:
+
